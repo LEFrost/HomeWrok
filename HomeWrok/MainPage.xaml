@@ -1,13 +1,66 @@
 ﻿<Page
     x:Class="HomeWrok.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HomeWrok"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="using:HomeWrok.ViewModel"
+    xmlns:model="using:HomeWrok.Model"
+    xmlns:converter="using:HomeWrok.Converter"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <converter:songnameConverter x:Key="songnameConverter"/>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="VisualState"/>
+                <VisualState x:Name="VisualState750"/>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Frame Name="mainFram" Grid.Row="0"/>
 
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <MediaElement Name="media"  Volume="0.3"/>
+            <Image Name="nowSongimage" Source="{x:Bind songinfo.Image,Mode=OneWay}" Grid.Column="0" HorizontalAlignment="Center" Height="50" Width="50"/>
+            <TextBlock Name="nowSongName" Text="{x:Bind songinfo.Songname,Mode=OneWay}" Grid.Column="2" FontSize="14"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <!--播放按钮-->
+            <StackPanel HorizontalAlignment="Left" Grid.Column="1" Orientation="Horizontal">
+                <Button Name="play" Background="White" Click="play_Click" BorderThickness="0">
+                    <Button.Content>
+                        <FontIcon Name="playicon" FontFamily="Segoe MDL2 Assets" Glyph="&#xe102;" />
+                    </Button.Content>
+                </Button>
+                <!--<Button Name="next" Background="White" BorderThickness="0">
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe101;"/>
+                    </Button.Content>
+                </Button>-->
+                <Button Name="Volume" Background="White" BorderThickness="0">
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe767;"/>
+                    </Button.Content>
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <Slider Name="slider" Height="100" Orientation="Vertical" Minimum="0" Maximum="100" ValueChanged="Slider_ValueChanged"/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Page>

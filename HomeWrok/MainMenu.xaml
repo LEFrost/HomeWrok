@@ -1,0 +1,140 @@
+﻿<Page
+    x:Class="HomeWrok.MainMenu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HomeWrok"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodel="using:HomeWrok.ViewModel"
+    xmlns:model="using:HomeWrok.Model"
+    xmlns:converter="using:HomeWrok.Converter"
+    
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converter:songnameConverter x:Key="songnameConverter"/>
+        <converter:singernameConverter x:Key="singernameConverter"/>
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot Name="mainPivot" Grid.Row="0">
+            <PivotItem Header="主页">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListView Name="playlist" SelectionChanged="{x:Bind pageevent.SelectionSongplayList}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:SongInfo">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="5*" MinWidth="150"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="3*" MinWidth="80"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{x:Bind Image}" Grid.Column="0" Height="60" Width="60"/>
+                                    <TextBlock Text="{x:Bind Songname,Converter={StaticResource songnameConverter}}" MinWidth="150" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" FontSize="20" />
+                                    <TextBlock Text="{x:Bind Singername,Converter={StaticResource singernameConverter}}" MinWidth="80" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Grid.Column="4"/>
+                                    <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Button Name="Download" Background="White" BorderThickness="0" Click="Download_Click">
+                                            <Button.Content>
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe74b;"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Name="Delete" Background="White" BorderThickness="0" Click="Delete_Click">
+                                            <Button.Content>
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe10a;"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="排行榜">
+                <GridView  Name="Top" IsItemClickEnabled="True" SelectionChanged="Top_SelectionChanged">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:TopOne">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Image Source="{x:Bind Albumpic}"  Height="150" Width="150" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    <Grid>
+                                        <Rectangle HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="#FF252121" Opacity="0.7" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <TextBlock Text="{x:Bind Topname}" TextWrapping="WrapWholeWords" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                                    </Grid>
+                                </Grid>
+                                <!--<Grid>
+                                    <TextBlock Text="1."/>
+                                    <TextBlock Text="{Binding Singername}"/>
+                                    <TextBlock Text="{Binding songname}"/>
+                                </Grid>-->
+                            </StackPanel >
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </PivotItem>
+            <PivotItem Name="Find" Header="搜索">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Name="findTexBox" Text="" Grid.Row="0" Grid.Column="0"/>
+                    <Button Name="findButton" Content="搜索" Grid.Row="0" Grid.Column="1" Click="findButton_Click"/>
+                    <ScrollViewer Name="findSongSL" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ViewChanged="SongListSL_ViewChanged">
+                        <ListView Name="songListView" SelectionChanged="{x:Bind pageevent.SelectionSongContentlist}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Contentlist">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="5*" MinWidth="150"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="3*" MinWidth="80"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <!--<ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="20"/>-->
+                                            <ColumnDefinition Width="70"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{x:Bind Albumpic_small}" Grid.Column="0" Height="60" Width="60"/>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="{x:Bind Songname,Converter={StaticResource songnameConverter}}" MinWidth="150" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" FontSize="20" />
+                                            <TextBlock Text="{x:Bind Albumname,Converter={StaticResource songnameConverter}}" MinWidth="80" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Grid.Column="4"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Button Name="Add"  Background="White" BorderThickness="0" Click="Add_Click">
+                                                <Button.Content>
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe710;"/>
+                                                </Button.Content>
+                                            </Button>
+                                            <Button Name="Download" Background="White" BorderThickness="0" Click="Download_Click">
+                                                <Button.Content>
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe74b;"/>
+                                                </Button.Content>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
